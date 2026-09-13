@@ -183,6 +183,7 @@ def run_real_data_processor_test(
                 result = processor.process_strategy(
                     graph=graph,
                     strategy_result=strategy_result,
+                    doc_id= document.doc_id
                 )
 
                 validate_subgraph_result(

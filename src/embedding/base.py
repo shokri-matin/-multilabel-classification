@@ -12,7 +12,7 @@ class EmbeddingOutput:
     """
     Result of embedding one word sequence.
     """
-
+    doc_id: str
     strategy: str
     mode: str
 

@@ -4,7 +4,7 @@ from typing import Dict, List, Literal
 import networkx as nx
 
 from src.graph.centrality import StrategyResult
-
+from src.graph.word_graph import WordGraph
 
 ExtractionMode = Literal["branch", "no_branch"]
 
@@ -14,7 +14,7 @@ class SubgraphResult:
     """
     Result of extracting one subgraph from one central node.
     """
-
+    doc_id: str | None
     strategy: str
     central_node: str
     central_score: float
@@ -200,6 +200,7 @@ class GraphProcessor:
         self,
         graph: nx.Graph,
         strategy_result: StrategyResult,
+        doc_id: str | None = None,
     ) -> StrategySubgraphResult:
         """
         Extract subgraphs for all Top-W nodes of one strategy.
@@ -229,6 +230,7 @@ class GraphProcessor:
 
                 subgraphs.append(
                     SubgraphResult(
+                        doc_id = doc_id,
                         strategy=strategy_result.strategy,
                         central_node=central_node,
                         central_score=central_score,
@@ -267,6 +269,7 @@ class GraphProcessor:
 
                 subgraphs.append(
                     SubgraphResult(
+                        doc_id = doc_id,
                         strategy=strategy_result.strategy,
                         central_node=central_node,
                         central_score=central_score,
@@ -286,6 +289,7 @@ class GraphProcessor:
         self,
         graph: nx.Graph,
         strategy_results: Dict[str, StrategyResult],
+        doc_id: str | None = None,
     ) -> Dict[str, StrategySubgraphResult]:
         """
         Extract subgraphs for all centrality strategies.
@@ -293,8 +297,9 @@ class GraphProcessor:
 
         return {
             strategy: self.process_strategy(
-                graph=graph,
+                graph = graph,
                 strategy_result=result,
+                doc_id=doc_id
             )
             for strategy, result in strategy_results.items()
         }

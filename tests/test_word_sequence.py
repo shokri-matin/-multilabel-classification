@@ -32,6 +32,7 @@ def build_subgraph(
         )
 
     return SubgraphResult(
+        doc_id=None,
         strategy=strategy,
         central_node=nodes[0],
         central_score=1.0,
@@ -346,6 +347,7 @@ def test_missing_positions_raise_error():
     )
 
     subgraph = SubgraphResult(
+        doc_id=None,
         strategy="degree",
         central_node="machine",
         central_score=1.0,

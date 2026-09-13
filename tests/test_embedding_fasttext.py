@@ -31,27 +31,38 @@ def test_fasttext_config_invalid_dimension():
         )
 
 class FakeFastTextModel:
+    
+    def get_dimension(self):
+        return 4
 
-    vector_size = 4
+    def get_word_vector(self, word):
+        if word == "machine":
+            return np.array(
+                [1.0, 2.0, 3.0, 4.0],
+                dtype=np.float32,
+            )
 
-    def get_vector(self, word):
-        values = {
-            "machine": [1.0, 2.0, 3.0, 4.0],
-            "learning": [2.0, 3.0, 4.0, 5.0],
-            "graph": [3.0, 4.0, 5.0, 6.0],
-        }
+        if word == "learning":
+            return np.array(
+                [2.0, 3.0, 4.0, 5.0],
+                dtype=np.float32,
+            )
 
-        return np.asarray(
-            values.get(
-                word,
-                [0.5, 0.5, 0.5, 0.5],
-            ),
+        if word == "graph":
+            return np.array(
+                [3.0, 4.0, 5.0, 6.0],
+                dtype=np.float32,
+            )
+
+        return np.ones(
+            4,
             dtype=np.float32,
         )
 
 def make_sequence(words):
 
     return WordSequence(
+        doc_id="1",
         strategy="degree",
         mode="no_branch",
         central_node=words[0],

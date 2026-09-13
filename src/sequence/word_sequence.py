@@ -31,7 +31,7 @@ class WordSequence:
     """
     Fixed-length word sequence extracted from a subgraph.
     """
-
+    doc_id: str
     strategy: str
     mode: str
 
@@ -172,6 +172,7 @@ class WordSequenceBuilder:
             )
 
         return WordSequence(
+            doc_id=subgraph.doc_id,
             strategy=subgraph.strategy,
             mode=mode,
             central_node=subgraph.central_node,

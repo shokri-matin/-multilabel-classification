@@ -11,6 +11,7 @@ from src.sequence.word_sequence import (
 
 def make_sequence(words):
     return WordSequence(
+        doc_id="1",
         strategy="degree",
         mode="no_branch",
         central_node=words[0],

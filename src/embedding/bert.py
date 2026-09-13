@@ -210,6 +210,7 @@ class BERTEmbedder(BaseEmbedder):
         )
 
         return EmbeddingOutput(
+            doc_id=sequence.doc_id,
             strategy=sequence.strategy,
             mode=sequence.mode,
             central_node=sequence.central_node,
