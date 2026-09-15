@@ -9,6 +9,7 @@ class SequenceArtifactCache:
     """
     Persistent cache for graph-derived word sequences.
 
+    
     Cache key:
         dataset / doc_id / centrality / mode
 

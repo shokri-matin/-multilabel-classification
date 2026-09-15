@@ -9,6 +9,8 @@ from sklearn.metrics import (
     recall_score,
 )
 
+from src.classifier.dataset import LabelEncoder
+
 
 @dataclass(frozen=True)
 class EvaluationResult:
@@ -26,6 +28,7 @@ class EvaluationResult:
     samples: int
     labels: int
 
+
 class MultiLabelEvaluator:
     def __init__(
         self,
@@ -42,6 +45,7 @@ class MultiLabelEvaluator:
         self,
         probabilities: np.ndarray,
     ) -> np.ndarray:
+
         probabilities = np.asarray(
             probabilities,
             dtype=np.float32,
@@ -61,6 +65,7 @@ class MultiLabelEvaluator:
         self,
         logits: np.ndarray,
     ) -> np.ndarray:
+
         logits = np.asarray(
             logits,
             dtype=np.float32,
@@ -168,10 +173,12 @@ class MultiLabelEvaluator:
             labels=labels,
         )
 
+
 @dataclass(frozen=True)
 class DocumentPrediction:
     doc_id: str
     probabilities: np.ndarray
+
 
 class DocumentAggregator:
 
@@ -198,7 +205,7 @@ class DocumentAggregator:
                 "number of probability samples"
             )
 
-        grouped = {}
+        grouped: dict[str, list[np.ndarray]] = {}
 
         for index, doc_id in enumerate(doc_ids):
 
@@ -227,12 +234,12 @@ class DocumentAggregator:
 
         return results
 
+
 def evaluate_document_level(
     evaluator: MultiLabelEvaluator,
-    document_predictions: Sequence[
-        DocumentPrediction
-    ],
-    document_labels: dict[str, Sequence[int]],
+    document_predictions: Sequence[DocumentPrediction],
+    document_labels: dict[str, Sequence[str]],
+    label_encoder: LabelEncoder,
 ) -> EvaluationResult:
 
     if not document_predictions:
@@ -251,8 +258,12 @@ def evaluate_document_level(
                 f"'{prediction.doc_id}'"
             )
 
-        y_true.append(
+        encoded_labels = label_encoder.encode(
             document_labels[prediction.doc_id]
+        )
+
+        y_true.append(
+            encoded_labels.numpy()
         )
 
         probabilities.append(

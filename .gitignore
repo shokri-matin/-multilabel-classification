@@ -76,6 +76,7 @@ checkpoints/
 # =========================
 outputs/
 artifacts/
+results/
 
 # =========================
 # Temporary files
